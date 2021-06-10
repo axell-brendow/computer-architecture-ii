@@ -1,0 +1,687 @@
+Questão 1
+
+f = 150 MHz = 150 * 10^6 Hz = 150 * 10^6 ciclos / segundo
+
+a)
+f = 1 / t
+f = 150 * 10^6 ciclos / segundo
+f = 150 * 10^6 * 10^-3 ciclos / milisegundo
+f = 15 * 10^4 ciclos / milisegundo
+
+t = 1 / (15 * 10^4) milisegundos / ciclo
+t = (1 / 15) * 10^-4 milisegundos / ciclo
+t = 0,000006666666666 milisegundos / ciclo
+
+
+b)
+f = 1 / t
+f = 150 * 10^6 ciclos / segundo
+f = 150 * 10^6 * 10^-6 ciclos / microsegundo
+f = 15 * 10^1 ciclos / microsegundo
+
+t = 1 / (15 * 10^1) microsegundos / ciclo
+t = (1 / 15) * 10^-1 microsegundos / ciclo
+t = 0,006666666666 microsegundos / ciclo
+
+
+c)
+f = 1 / t
+f = 150 * 10^6 ciclos / segundo
+f = 150 * 10^6 * 10^-9 ciclos / nanosegundo
+f = 15 * 10^-2 ciclos / nanosegundo
+
+t = 1 / (15 * 10^-2) nanosegundos / ciclo
+t = (1 / 15) * 10^2 nanosegundos / ciclo
+t = 6,666666666 nanosegundos / ciclo
+
+------------------------------------
+
+Questão 2
+
+t = 100 nanosegundos / ciclo
+t = 10^2 nanosegundos / ciclo
+
+t = 10^2 * 10^-3 microsegundos / ciclo
+t = 10^-1 microsegundos / ciclo
+
+t = 10^2 * 10^-6 milisegundos / ciclo
+t = 10^-4 milisegundos / ciclo
+
+a)
+f = 1 / t
+t = 10^-4 milisegundos / ciclo
+f = 10^4 ciclos / milisegundo = 10^4 KHz
+
+b)
+f = 1 / t
+t = 10^-1 microsegundos / ciclo
+f = 10^1 ciclos / microsegundo = 10^1 MHz
+
+c)
+f = 1 / t
+t = 10^2 nanosegundos / ciclo
+f = 10^-2 ciclos / nanosegundo = 10^-2 GHz
+
+------------------------------------
+
+Questão 3
+
+p -> propaga o vai 1 -> or das entradas
+g -> gera o vai 1 -> and das entradas
+
+a)
+FACA + BABA
+
+      ponmlkjihgfedcba
+
+FACA  1111101011001010
+BABA  1011101010111010
+  
+p     1111101011111010
+g     1011101010001010
+
+Sim, terá vai 1 no final, pois os bits da coluna p geram e propagam o vai 1 final
+
+b)
+3AF1 + 45EA
+
+      ponmlkjihgfedcba
+
+3AF1  0011101011110001
+45EA  0100010111101010
+  
+p     0111111111111011
+g     0000000011100000
+
+Não terá vai 1 final, pois os bits da coluna p não o propagarão
+
+------------------------------------
+
+Questão 4
+
+Tendo em mente que os números estão na base 2, e que existem o multiplicando e o multiplicador,
+o que o algoritmo faz é:
+
+1º - inicia o produto como 0
+2º - soma o multiplicando ao produto caso o bit mais à direita do multiplicador seja 1
+3º - desloca o multiplicador uma vez para a direita
+4º - desloca o produto uma vez para a direita
+5º - finaliza se todos os bits do multiplicador tiverem sido usados, caso contrário, volta a 2º
+
+Exemplo, 3 * 5:
+
+1 ->
+multiplicando = 3 = 0011
+multiplicador = 5 = 0101
+produto = 0000 0000
+
+2 ->
+multiplicando = 3 = 0011
+multiplicador = 5 = 0101 (o bit mais à direita do multiplicador é 1, então soma-se o multiplicando ao produto)
+produto = 0011 0000
+
+3 -> (bits usados do multiplicador = 1)
+multiplicando = 3 = 0011
+multiplicador = 5 = 0010 (deslocar o multiplicador uma vez para a direita)
+produto = 0001 1000 (deslocar o produto uma vez para a direita)
+
+4 ->
+multiplicando = 3 = 0011
+multiplicador = 5 = 0010 (o bit mais à direita do multiplicador é 0, então não se faz nada)
+produto = 0001 1000
+
+5 -> (bits usados do multiplicador = 2)
+multiplicando = 3 = 0011
+multiplicador = 5 = 0001 (deslocar o multiplicador uma vez para a direita)
+produto = 0000 1100 (deslocar o produto uma vez para a direita)
+
+6 ->
+multiplicando = 3 = 0011
+multiplicador = 5 = 0001 (o bit mais à direita do multiplicador é 1, então soma-se o multiplicando ao produto)
+produto = 0011 1100
+
+7 -> (bits usados do multiplicador = 3)
+multiplicando = 3 = 0011
+multiplicador = 5 = 0000 (deslocar o multiplicador uma vez para a direita)
+produto = 0001 1110 (deslocar o produto uma vez para a direita)
+
+8 ->
+multiplicando = 3 = 0011
+multiplicador = 5 = 0000 (o bit mais à direita do multiplicador é 0, então não se faz nada)
+produto = 0001 1110
+
+9 -> (bits usados do multiplicador = 4)
+multiplicando = 3 = 0011
+multiplicador = 5 = 0000 (deslocar o multiplicador uma vez para a direita)
+produto = 0000 1111 (deslocar o produto uma vez para a direita)
+
+10 -> processo finalizado, todos os bits do multiplicador foram usados.
+
+------------------------------------
+
+Questão 6
+
+------------------------------------
+
+Questão 7
+
+a) 803ACABA (IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127
+
+s	expoente	mantissa
+1	00000000	01110101100101010111010 -> não normalizado, mantissa != 0 -> exp = -bias + 1 = -126
+leading bit = 0
+
+a) = - 0,01110101100101010111010 * 2 ^ (-126) = - 00111010110010101011101,0 * 2 ^ (-148)
+a) = - 1926493 * 2 ^ (-148) ≈ - 5,399 * 10 ^ (-39) ≈ - 5,4 * 10 ^ (-39)
+
+
+b) 00FAFACA (IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127
+
+s	expoente	mantissa
+0	00000001	11110101111101011001010 -> normalizado
+leading bit = 1
+
+b) =   1,11110101111101011001010 * 2 ^ (1 - 127) =   11111010111110101100101,0 * 2 ^ (-148)
+b) =   8224101 * 2 ^ (-148) ≈   2,304 * 10 ^ (-38) ≈   2,3 * 10 ^ (-38)
+
+
+c) 803ACABA00000000 (IEEE 754 – 1/11/52), bias = 2^(n-1) - 1 = 2^10 - 1 = 1023
+
+s	expoente	mantissa
+1	00000000011	1010110010101011101000000000000000000000000000000000 -> normalizado
+leading bit = 1
+
+c) =  - 1,1010110010101011101000000000000000000000000000000000 * 2 ^ (3 - 1023) =
+c) =  - 1101011001010101110100000000000000000000000000000000,0 * 2 ^ (-1071) =
+c) =  - 3770624803602432 * 2 ^ (-1071) ≈  - 1,490 * 10 ^ (-307) ≈  - 1,49 * 10 ^ (-307)
+
+
+d) 00FAFACA00000000 (IEEE 754 – 1/11/52), bias = 2^(n-1) - 1 = 2^10 - 1 = 1023
+
+s	expoente	mantissa
+0	00000001111	1010111110101100101000000000000000000000000000000000 -> normalizado
+leading bit = 1
+
+d) =   1,1010111110101100101000000000000000000000000000000000 * 2 ^ (15 - 1023) =
+d) =   1101011111010110010100000000000000000000000000000000,0 * 2 ^ (-1059) =
+d) =   3797047442407424 * 2 ^ (-1071) ≈   6,147 * 10 ^ (-304) ≈   6,15 * 10 ^ (-304)
+
+------------------------------------
+
+Questão 8
+
+a) 1.1234 x 10^5 = 112340_{10} = 1B6D4_{16} = 11011011011010100_{2} = 1,1011011011010100 * 2^16
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_rep = exp_real + bias = 16 + 127 = 143
+
+s	expoente	mantissa
+0	10001111	10110110110101000000000 -> normalizado
+leading bit = 1
+
+
+(IEEE 754 – 1/11/52), bias = 2^(n-1) - 1 = 2^10 - 1 = 1023, exp_rep = exp_real + bias = 16 + 1023 = 1039
+
+s	expoente	mantissa
+0	10000001111	1011011011010100000000000000000000000000000000000000 -> normalizado
+leading bit = 1
+
+
+b) 7.2354 x 10^(-4) ≈ 0,002F6A_{16} ≈ ( 2,F6A * F^(-3) )_{16} ≈ 0,00000000001011110111_{2} ≈ 1,011110111_{2} * 2^(-11)
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_rep = exp_real + bias = -11 + 127 = 116
+
+s	expoente	mantissa
+0	01110100	01111011100000000000000 -> normalizado
+leading bit = 1
+
+
+(IEEE 754 – 1/11/52), bias = 2^(n-1) - 1 = 2^10 - 1 = 1023, exp_rep = exp_real + bias = -11 + 1023 = 1012
+
+s	expoente	mantissa
+0	01111110100	0111101110000000000000000000000000000000000000000000 -> normalizado
+leading bit = 1
+
+------------------------------------
+
+Questão 9
+
+a) 14.125 = E.2_{16} = 1110.001_{2} = 1.110001_{2} * 2^3
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_rep = exp_real + bias = 3 + 127 = 130
+
+s	expoente	mantissa
+0	10000010	11000100000000000000000 -> normalizado
+leading bit = 1
+
+
+b) 3.14159 = 3.243F_{16} = 11.001001000011111101_{2} = 1.1001001000011111101_{2} * 2^1
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_rep = exp_real + bias = 1 + 127 = 128
+
+s	expoente	mantissa
+0	10000000	10010010000111111010000 -> normalizado
+leading bit = 1
+
+
+c) -58.375 = -3A.6_{16} = -111010.011_{2} = -1.11010011_{2} * 2^5
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_rep = exp_real + bias = 5 + 127 = 132
+
+s	expoente	mantissa
+0	10000100	11010011000000000000000 -> normalizado
+leading bit = 1
+
+
+d) -4096 = -1000_{16} = -1000000000000_{2} = -1.000000000000_{2} * 2^12
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_rep = exp_real + bias = 12 + 127 = 139
+
+s	expoente	mantissa
+0	10001011	00000000000000000000000 -> normalizado
+leading bit = 1
+
+
+e) -3.25 = -3.4_{16} = -11.01_{2} = -1.101_{2} * 2^1
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_rep = exp_real + bias = 1 + 127 = 128
+
+s	expoente	mantissa
+0	10000000	10100000000000000000000 -> normalizado
+leading bit = 1
+
+------------------------------------
+
+Questão 10
+
+a) 0 10000001 01100000000000000000000
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_real = exp_rep - bias = 129 - 127 = 2
+
+M = mantissa + ( normalizado ? 1 : 0 ) = 0.375 + 1 = 1.375
+
+valor = (-1)^s * M * 2 ^ exp_real = 1 * 1.375 * 2 ^ 2 = 5.5
+
+
+b) 1 10000001 00010000000000000000000
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_real = exp_rep - bias = 129 - 127 = 2
+
+M = mantissa + ( normalizado ? 1 : 0 ) = 0.0625 + 1 = 1.0625
+
+valor = (-1)^s * M * 2 ^ exp_real = -1 * 1.0625 * 2 ^ 2 = -4.25
+
+
+c) 1 10000000 00000000000000000000000
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_real = exp_rep - bias = 128 - 127 = 1
+
+M = mantissa + ( normalizado ? 1 : 0 ) = 0.0 + 1 = 1
+
+valor = (-1)^s * M * 2 ^ exp_real = -1 * 1 * 2 ^ 1 = -2
+
+
+d) 0 00000001 01011000000000000000000
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_real = exp_rep - bias = 1 - 127 = -126
+
+M = mantissa + ( normalizado ? 1 : 0 ) = 0.34375 + 1 = 1.34375
+
+valor = (-1)^s * M * 2 ^ exp_real = 1 * 1.34375 * 2 ^ (-126) = 1.5795 * 10^(-38)
+
+
+------------------------------------
+
+Questão 11
+
+a) 0x41202000 = 0 10000010 01000000010000000000000 -> normalizado
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_real = exp_rep - bias = 130 - 127 = 3
+
+M = mantissa + ( normalizado ? 1 : 0 ) = 0.2509 + 1 = 1.2509
+
+valor = (-1)^s * M * 2 ^ exp_real = 1 * 1.2509 * 2 ^ 3 = 10.0072
+
+
+b) 0x00000000 = 0 00000000 00000000000000000000000 -> não normalizado, mantissa == 0 -> valor = 0
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127
+
+M = mantissa + ( normalizado ? 1 : 0 ) = 0.0 + 0 = 0.0
+
+valor = (-1)^s * M * 2 ^ exp_real = 1 * 0.0 * 2 ^ 0 = 0.0
+
+
+c) 0x42E80000 = 0 10000101 11010000000000000000000 -> normalizado
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_real = exp_rep - bias = 133 - 127 = 6
+
+M = mantissa + ( normalizado ? 1 : 0 ) = 0.8125 + 1 = 1.8125
+
+valor = (-1)^s * M * 2 ^ exp_real = 1 * 1.8125 * 2 ^ 6 = 116
+
+
+d) 0xC1DA0000 = 1 10000011 10110100000000000000000 -> normalizado
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127, exp_real = exp_rep - bias = 131 - 127 = 4
+
+M = mantissa + ( normalizado ? 1 : 0 ) = 0.703125 + 1 = 1.703125
+
+valor = (-1)^s * M * 2 ^ exp_real = 1 * 1.703125 * 2 ^ 4 = 27.25
+
+
+e) 0xFFFFFFFF = 1 11111111 11111111111111111111111 -> não normalizado, mantissa != 0 -> valor = √(-1), ∞ - ∞, etc (NaN)
+
+(IEEE 754 – 1/8/23), bias = 2^(n-1) - 1 = 2^7 - 1 = 127
+
+M = mantissa + ( normalizado ? 1 : 0 ) = ???
+
+valor = (-1)^s * M * 2 ^ exp_real = Not a Number
+
+
+------------------------------------
+
+Questão 12
+
+------------------------------------
+
+Questão 13
+
+b) D57F0000 = 1 10101010 11111110000000000000000
+e) D5FFE000 = 1 10101011 11111111110000000000000
+c) 5F7FF800 = 0 10111110 11111111111100000000000
+a) 7F7FF800 = 0 11111110 11111111111100000000000
+d) 7F800000 = 0 11111111 00000000000000000000000
+
+------------------------------------
+
+Questão 14
+
+a) 1.12 * 10^2 = 112 = 1110000_{2} = 1.11 * 2^6
+
+(IEEE 754 – 1/4/3), bias = 2^(n-1) - 1 = 2^3 - 1 = 7, exp_rep = exp_real + bias = 6 + 7 = 13
+
+s	expoent	mantissa
+0	1101	110 -> normalizado
+leading bit = 1
+(Não houve nenhuma perda de precisão na transferência do 1º número para IEEE-754)
+
+
+2.24 * 10^(-1) = 0.00111001010110000001_{2} = 1.11001010110000001 * 2^(-3)
+
+(IEEE 754 – 1/4/3), bias = 2^(n-1) - 1 = 2^3 - 1 = 7, exp_rep = exp_real + bias = -3 + 7 = 4
+
+s	expoent	mantissa
+0	0100	110 -> normalizado
+leading bit = 1
+(Houve perda de precisão, novo valor = 1.11 * 2^(-3) = 0.21875)
+
+Soma com erro = 112 + 0.21875	= 112.21875
+Soma sem erro = 112 + 0.224 	= 112.224
+Erro relativo = 1 - (Soma com erro / Soma sem erro) = 1 - 0.99995 = 0.00005 = 0.005%
+Erro absoluto = 112.224 - 112.21875 = 0.00525
+
+Produto com erro = 112 * 0.21875	= 24.5
+Produto sem erro = 112 * 0.224 		= 25.088
+Erro relativo = 1 - (Produto com erro / Produto sem erro) = 1 - 0.9765 = 0.0234 = 2.34%
+Erro absoluto = 25.088 - 24.5 = 0.588
+
+
+b) 1.12 * 10^2 = 112 = 1110000_{2} = 1.11 * 2^6
+
+(IEEE 754 – 1/3/4), bias = 2^(n-1) - 1 = 2^2 - 1 = 3, exp_rep = exp_real + bias = 6 + 3 = 9 = 1001
+
+s	exp	mantissa
+0	100	1100 -> normalizado
+leading bit = 1
+(Houve perda de precisão, novo valor = 1.11 * 2^1 = 11.1 = 3.5)
+
+
+2.24 * 10^(-1) = 0.00111001010110000001_{2} = 1.11001010110000001 * 2^(-3)
+
+(IEEE 754 – 1/3/4), bias = 2^(n-1) - 1 = 2^2 - 1 = 3, exp_rep = exp_real + bias = -3 + 3 = 0
+
+s	exp	mantissa
+0	000	1100 -> não normalizado, mantissa != 0 -> exp = -bias + 1 = -2
+leading bit = 1
+(Houve perda de precisão, novo valor = 1.11 * 2^(-2) = 0.4375)
+
+Soma com erro = 3.5 + 0.4375	= 3.9375
+Soma sem erro = 112 + 0.224 	= 112.224
+Erro relativo = 1 - (Soma com erro / Soma sem erro) = 1 - 0.03508 = 0.9649 = 96.49%
+Erro absoluto = 112.224 - 3.9375 = 108.2865
+
+Produto com erro = 3.5 * 0.4375	= 1.53125
+Produto sem erro = 112 * 0.224 		= 25.088
+Erro relativo = 1 - (Produto com erro / Produto sem erro) = 1 - 0.0610 = 0.9389 = 93.89%
+Erro absoluto = 25.088 - 1.53125 = 23.55675
+
+------------------------------------
+
+Questão 15
+
+------------------------------------
+
+Questão 16
+
+vel_mem_princ = x -> vel_mem_cache = 5x
+supondo que o tempo gasto sem melhoria é 10t = t + 9t, com a melhoria, o tempo passa a ser de
+t + 9t/5 = 14t/5, portanto, o speed up é igual a 10t / (14t / 5) = 10t * 5 / 14t = 50 / 14  =  25 / 7 = 3 + 4 / 7 = 3.57
+
+------------------------------------
+
+Questão 17
+
+Supondo que o tempo gasto sem a melhoria seja 10t:
+
+a) tempo gasto com a melhoria = 5t + 5t / 5 = 6t -> speed up = 10t / 6t  =  10 / 6  =  5 / 3  =  1 + 2 / 3  =  1.444444...
+
+b) speed up = 2 = tempo_sem_melhoria / tempo_com_melhoria = 10t / tempo_com_melhoria -> tempo_com_melhoria = 5t, supondo
+que a utilização do coprocessador seja igual a k, a utilização do processador será 1 - k, daí posso montar a relação:
+(1 - k) * 10t + k * 10t / 5 = 5t -> dividindo tudo por 5t -> (1 - k) * 2 + k * 2 / 5 = 1 ->
+2 - 2k + 2k / 5 = 1 -> 1 = 2k - 2k / 5 -> 1 = 4 * 2k / 5 -> k = 5 / 8 = 62,5%
+
+c) supondo que essa quantidade de vezes seja x, posso montar a relação: 10t / ( 5t + 5t / x ) = 2.5 ->
+4t / ( 5t + 5t / x ) = 1 -> 4t = 5t + 5t / x -> 0 = t + 5t / x -> -t = 5t / x -> x = -5 ( IMPOSSÍVEL )
+
+------------------------------------
+
+Questão 18
+
+tempo_total_com_o_1º_processador = t
+preço_da_maquina_com_o_1º_processador = p
+1º processador -> velocidade = v1, preço = p1
+2º processador -> velocidade = v2, preço = p2
+Uso do 2º processador = 50%
+Relações: v2 = 5 * v1, p2 = 5 * p1, p1 = 1/3 * p
+speed_up = t / ( t/2 + (t / 2) / 5 ) = 5 / 3 ≈ 1.6
+speed_up_financeiro = ( 2p/3 + 1p/3 * 5 ) / p = 7 / 3  ≈ 2.3
+Não valhe a pena, pois o speed up financeiro é maior que o speed up de desempenho
+
+------------------------------------
+
+Questão 19
+
+tempo_total_sem_melhoria = t
+
+1º caso:
+speed_up1 = t / ( 4t/5 + (t / 5) / 10 ) = 50/41 ≈ 1.22
+2º caso:
+speed_up2 = t / ( t/2 + (t / 2) / 2 ) = 4/3 ≈ 1.3
+
+A melhor alternativa é o 2º caso por ter um speed up maior.
+
+------------------------------------
+
+Questão 20
+
+tempo_total_inicial = t
+tempo_total_depois_da_melhoria = t'
+porcentagem_inicial_melhorada = k
+speed_up = tempo_sem_melhoria / tempo_com_melhoria
+tempo_com_melhoria = tempo_sem_melhoria / speed_up
+speed_up_fração_melhorada = 10 =
+tempo_sem_melhoria_fração_melhorada / tempo_com_melhoria_fração_melhorada
+
+Resposta para as duas alternativas:
+speed_up = t / ( t * (1 - k) + t * k / 10) = 10 / (10 - 9k)
+speed_up = t / t' -> t' = t / speed_up -> t' / 2 = t / (2 * speed_up)
+t' / 2 representa a fração melhorada. Como o fator de melhoramento foi de
+10, na versão inicial, essa parte era 10 vezes mais lenta, ou seja, gastava
+10 vezes mais tempo -> t * k = (t / (2 * speed_up)) * 10 -> k = 10 / (2 * speed_up)
+2 * speed_up = 10 / k -> speed_up = 5 / k ->
+5 / k = 10 / (10 - 9k) -> k = 10/11 -> speed_up = 55/10 = 5.5
+
+------------------------------------
+
+Questão 21
+
+quantidade_de_ciclos_que_o_programa_gasta_em_A = 10 * 400 * 10 ^ 6 = 4 Gigaciclos
+quantidade_de_ciclos_que_o_programa_gasta_em_B = 4 Gigaciclos * 1.2 = 4.8 Gigaciclos
+speed_up = 3 / 2 = tempo_em_A / tempo_em_B -> tempo_em_B = 20/3 ->
+frequência_em_B = 4.8 Gigaciclos / 20/3 segundos = 0.72 GHz = 720MHz
+
+------------------------------------
+
+Questão 22
+
+tempo = 1000 * 1 / 100MHz = 1000 / (100 * 10^6) = 10 / 10^6 = 10 microsegundos
+
+------------------------------------
+
+Questão 23
+
+tempo_programa1 = 2000 * 5 / 100 MHz = 100 / 10^6 = 100 microsegundos
+tempo_programa2 = 3000 * 5 / 100 MHz = 100 / 10^6 = 150 microsegundos
+speed_up = 150 microsegundos / 100 microsegundos = 1.5
+
+------------------------------------
+
+Questão 24
+
+CPI_médio = (4 * 60 + 5 * 40) / 100 = 4.4
+CPI_médio_novo = (3 * 60 + 5 * 40) / 100 = 3.8
+Como a quantidade de instruções não muda nem a frequência,
+o speed up é apenas uma relação entre os CPIs:
+speed_up = 4.4 / 3.8 = 1.15
+
+------------------------------------
+
+Questão 25
+
+a) CPI_médio = (4 * 40 + 3 * 30 + 5 * 20 + 6 * 10) / 100 = 4.1
+b) Mudando apenas a frequência, o speed_up muda da mesma forma -> speed_up = 1.12
+c) CPI_médio_novo = (2 * 40 + 3 * 30 + 6 * 20 + 6 * 10) / 100 = 3.5
+Mudando apenas o CPI_médio, a speed_up muda da mesma forma -> speed_up = 4.1 / 3.5 = 1.17
+d) Supondo um total de 100 instruções, as instruções na ALU passariam a ser 20. Dessa forma,
+as novas porcentagens são:
+ALU:		20 / 80 = 1/4
+desvio:		30 / 80 = 3/8
+memória:	20 / 80 = 1/4
+outras:		10 / 80 = 1/8
+CPI_médio_novo = ( 1/4 * 4 + 3/8 * 3 + 1/4 * 5 + 1/8 * 6 ) / 1 = 4.125
+Como a questão altera a quantidade de instruções e o CPI médio, é necessário
+calcular o speed up utilizando a fórmula de CPU time:
+CPU_Time_antigo	= 100 * 4.1 * f
+CPU_Time_novo	= 80 * 4.125 * f
+speed_up		= (5 * 4.1) / (4 * 4.125) ≈ 1.24
+
+------------------------------------
+
+Questão 2.1
+
+A máquina M2 é mais rápida para o programa 1. A máquina M1 é mais rápida para o programa 2.
+No programa 1, a máquina M2 é mais rápida 10 / 5 vezes = 2 vezes
+No programa 2, a máquina M1 é mais rápida 4  / 3 vezes ≈ 1.3 vezes
+
+------------------------------------
+
+Questão 2.2
+
+velocidade_M1 = 200 Megainstruções / 10 segundos = 20 Megainstruções / segundo = 20 * 10^6 instruções / segundo
+velocidade_M2 = 160 Megainstruções / 5  segundos = 32 Megainstruções / segundo = 32 * 10^6 instruções / segundo
+
+------------------------------------
+
+Questão 2.3
+
+CPI = (f * t) / IC
+CPI_M1 = 200 MHz * 10 s / 200 MI = 200Hz * 10 s / 200 I = 10 s * Hz / I = 10 C/I
+CPI_M2 = 300 MHz * 10 s / 200 MI = 300Hz * 10 s / 200 I = 15 s * Hz / I = 15 C/I
+
+------------------------------------
+
+Questão 2.4
+
+IC = (f * t) / CPI
+IC_M1 = (200 MHz * 3 s) / 10 C/I = 60 * 10^6 = 60 MI
+IC_M2 = (300 MHz * 4 s) / 15 C/I = 80 * 10^6 = 80 MI
+
+------------------------------------
+
+Questão 2.14
+
+CPU_Time = IC * CPI * tempo_cada_ciclo = IC * CPI / f
+{ CPI, frequência do clock, número de instruções do programa }
+
+------------------------------------
+
+Questão 2.18
+
+CPI_MBásica	= ( 2 * 40 + 3 * 25 + 3 * 25 + 5 * 10 ) / 100 = 2.8
+CPI_Mopt	= ( 2 * 40 + 2 * 25 + 3 * 25 + 4 * 10 ) / 100 = 2.45
+
+------------------------------------
+
+Questão 2.19
+
+A MBásica realiza 500 Megaciclos / segundo, como cada instruções gasta 2.8 ciclos,
+a quantidade de instruções por segundo é dada por: (500 MC / s) / 2.8 C/I = 178571428.571429 =
+178.571428571429 MIPS (provavelmente não é conveniente deixar uma número fracionário, mas espero que entenda)
+
+Analogamente, para a Mopt:
+
+(600 MC / s) / 2.45 C/I = 244.897959183673 MIPS
+
+------------------------------------
+
+Questão 2.20
+
+CPU_Time_MBásica	= (IC * 2.8) / 500 MHz
+CPU_Time_Mopt		= (IC * 2.45) / 600 MHz
+speed_up			= ( 2.8 * 600 ) / ( 500 * 2.45 ) ≈ 1.37
+
+------------------------------------
+
+Questão 2.21
+
+CPI = (f * t) / IC
+Supondo que o programa tenha IC instruções na MBásica:
+quantidade_de_instruções_A = 40% IC
+quantidade_de_instruções_B = 25% IC
+quantidade_de_instruções_C = 25% IC
+quantidade_de_instruções_D = 10% IC
+
+Na Mcomp as novas relações serão:
+quantidade_de_instruções_A = 90% 40% IC = 36%    IC
+quantidade_de_instruções_B = 90% 25% IC = 22.5%  IC
+quantidade_de_instruções_C = 85% 25% IC = 21.25% IC
+quantidade_de_instruções_D = 95% 10% IC = 9.5%   IC
+
+CPI_médio_novo = (36 * 2 + 22.5 * 3 + 21.25 * 3 + 9.5 * 5) / 89.25 ≈ 2.81
+
+------------------------------------
+
+Questão 2.22
+
+CPU_Time_MBásica	= (IC * 2.8) / 500 MHz
+CPU_Time_Mopt		= (89.25 * IC * 2.81) / (500 MHz * 100)
+speed_up			= ( 2.8 * 100 ) / ( 89.25 * 2.81 ) ≈ 1.11
+
+------------------------------------
+
+Questão 2.23
+
+CPI_médio_novo = (36 * 2 + 22.5 * 2 + 21.25 * 3 + 9.5 * 4) / 89.25 ≈ 2.451
+CPU_Time_MBásica	= (IC * 2.8) / 500 MHz
+CPU_Time_Mopt		= (89.25 * IC * 2.451) / (600 MHz * 100)
+speed_up			= ( 2.8 * 600 * 100 ) / ( 89.25 * 2.451 * 500 ) ≈ 1.53

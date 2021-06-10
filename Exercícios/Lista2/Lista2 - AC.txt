@@ -1,0 +1,541 @@
+# 1)
+# a = 10;
+# b = -1;
+# a = a + 1;
+# c = a + b;
+# 
+# $s0	= a
+# $s1	= b
+# $s2	= c
+
+.text
+.globl main
+main:
+addi	$s0	, $zero	, 10		# a	= 10
+addi	$s1	, $zero	, -1		# b	= -1
+addi	$s0	, $s0	, 1		# a	= a + 1
+add	$s2	, $s0	, $s1		# c	= a + b
+
+--------------------------------------------------
+
+# 2)
+# x = 3;
+# y = x * 4 ;
+# 
+# $s0	= x
+# $s1	= y
+
+.text
+.globl main
+main:
+addi	$s0	, $zero	, 3		# x	= 3
+sll	$s1	, $s0	, 2		# y	= 4x
+
+--------------------------------------------------
+
+# 3)
+# x = 3;
+# y = x * 1025;
+# 
+# $s0	= x
+# $s1	= y
+
+.text
+.globl main
+main:
+addi	$s0	, $zero	, 3		# x	= 3
+sll	$t0	, $s0	, 10		# $t0	= 4x
+add	$s1	, $t0	, $s0		# y	= $t0 + x
+
+--------------------------------------------------
+
+# 4)
+# x = 3;
+# y = x / 4;
+# 
+# $s0	= x
+# $s1	= y
+
+.text
+.globl main
+main:
+addi	$s0	, $zero	, 3		# x	= 3
+srl	$s1	, $s0	, 2		# $s1	= x / 4
+
+--------------------------------------------------
+
+# 5)
+# x	= 305419896;
+# 
+# $s0	= x
+
+.text
+.globl main
+main:
+ori	$t0	, $zero	, 0x1234	# $t0	= 0x1234
+sll	$t0	, $t0	, 16		# $t0	= $t0 << 16	= 0x12340000
+ori	$s0	, $t0	, 0x5678	# x	= 0x12345678
+
+--------------------------------------------------
+
+# 6)
+# x = -1;
+# y = x / 32;
+# 
+# $s0	= x
+# $s1	= y
+
+.text
+.globl main
+main:
+addi	$t0	, $zero	, 32	# t0	= 32
+addi	$s0	, $zero	, -1	# x	= -1
+#sra	$s1	, $s0	, 5	# y	= x / 32
+div	$s0	, $t0		# $lo	= x / 32
+mflo	$s1			# y	= x / 32
+
+--------------------------------------------------
+
+# 7)
+# A [ 12 ] = h + A [ 8 ];
+# 
+# $s0	= h
+# $s1	= &A[0]
+
+.text
+.globl main # rótulo onde o programa começa
+j main
+
+# Calcula o endereco de um elemento em um arranjo.
+#
+# @param Em $a0, Endereço de início do arranjo.
+# @param Em $a1, Indice do elemento que se deseja buscar.
+#
+# @return Em $v0, o endereço do elemento no índice informado.
+
+# calcular_endereco( endereco_base, indice )
+calcular_endereco:
+sll	$t9	, $a1	, 2		# $t0	= indice * 4
+add	$v0	, $a0	, $t9		# $v0	= endereço + 4 * indice
+jr $ra
+
+main:
+addi	$s0	, $zero	, 1		# h = 1
+ori	$s1	, $zero	, 0x1001
+sll	$s1	, $s1	, 16
+ori	$s1	, $s1	, 0x0000	# A = 0x10010000
+
+add	$a0	, $zero	, $s1		# Coloca o endereço base no primeiro argumento
+addi	$a1	, $zero	, 8		# Coloca o índice no segundo argumento
+jal	calcular_endereco		# Calcula o endereco do elemento no arranjo
+add	$t9	, $zero	, $v0		# Coloca o retorno da função em $t9
+
+lw	$t0	, 0	($t9)		# Coloca A[8] em $t0
+add	$t0	, $s0	, $t0		# Coloca em $t0 h + A[8]
+
+add	$a0	, $zero	, $s1		# Coloca o endereço base no primeiro argumento
+addi	$a1	, $zero	, 12		# Coloca o índice no segundo argumento
+jal	calcular_endereco		# Calcula o endereco do elemento no arranjo
+add	$t9	, $zero	, $v0		# Coloca o retorno da função em $t9
+
+sw	$t0	, 0	($t9)		# Guarda h + A[8] em A[12]
+
+.data
+A0:	.word	0
+A1:	.word	1
+A2:	.word	2
+A3:	.word	3
+A4:	.word	4
+A5:	.word	5
+A6:	.word	6
+A7:	.word	7
+A8:	.word	8
+A9:	.word	9
+A10:	.word	10
+A11:	.word	11
+A12:	.word	12
+
+--------------------------------------------------
+
+# 8)
+# h = k + A [ i ];
+# 
+# $s0	= h
+# $s1	= &A[0]
+# $s2	= k
+# $s3	= i
+
+.text
+.globl main # rótulo onde o programa começa
+j main
+
+# Calcula o endereco de um elemento em um arranjo.
+#
+# @param Em $a0, Endereço de início do arranjo.
+# @param Em $a1, Indice do elemento que se deseja buscar.
+#
+# @return Em $v0, o endereço do elemento no índice informado.
+
+# calcular_endereco( endereco_base, indice )
+calcular_endereco:
+sll	$t9	, $a1	, 2		# $t0	= indice * 4
+add	$v0	, $a0	, $t9		# $v0	= endereço + 4 * indice
+jr $ra
+
+main:
+# Inicialização das variáveis
+addi	$s0	, $zero	, 1		# h = 1
+addi	$s2	, $zero	, 1		# k = 1
+addi	$s3	, $zero	, 1		# i = 1
+ori	$s1	, $zero	, 0x1001
+sll	$s1	, $s1	, 16
+ori	$s1	, $s1	, 0x0000	# A = 0x10010000
+
+add	$a0	, $zero	, $s1		# Coloca o endereço base no primeiro argumento
+add	$a1	, $zero	, $s3		# Coloca o índice no segundo argumento
+jal	calcular_endereco		# Calcula o endereco do elemento no arranjo
+add	$t9	, $zero	, $v0		# Coloca o retorno da função em $t9
+
+lw	$t0	, 0	($t9)		# Coloca A[i] em $t0
+add	$s0	, $s2	, $t0		# h = k + A[i]
+
+.data
+A0:	.word	0
+A1:	.word	1
+
+--------------------------------------------------
+
+# 9)
+# A [ j ] = h + A [ i ];
+# 
+# $s0	= h
+# $s1	= &A[0]
+# $s2	= j
+# $s3	= i
+
+.text
+.globl main # rótulo onde o programa começa
+j main
+
+# Calcula o endereco de um elemento em um arranjo.
+#
+# @param Em $a0, Endereço de início do arranjo.
+# @param Em $a1, Indice do elemento que se deseja buscar.
+#
+# @return Em $v0, o endereço do elemento no índice informado.
+
+# calcular_endereco( endereco_base, indice )
+calcular_endereco:
+sll	$t9	, $a1	, 2		# $t0	= indice * 4
+add	$v0	, $a0	, $t9		# $v0	= endereço + 4 * indice
+jr $ra
+
+main:
+addi	$s0	, $zero	, 1		# h = 1
+ori	$s1	, $zero	, 0x1001
+sll	$s1	, $s1	, 16
+ori	$s1	, $s1	, 0x0000	# A = 0x10010000
+addi	$s2	, $zero	, 1		# j = 1
+addi	$s3	, $zero	, 1		# i = 1
+
+add	$a0	, $zero	, $s1		# Coloca o endereço base no primeiro argumento
+add	$a1	, $zero	, $s3		# Coloca o índice no segundo argumento
+jal	calcular_endereco		# Calcula o endereco do elemento no arranjo
+add	$t9	, $zero	, $v0		# Coloca o retorno da função em $t9
+
+lw	$t0	, 0	($t9)		# Coloca A[i] em $t0
+add	$t0	, $s0	, $t0		# Coloca em $t0 h + A[i]
+
+add	$a0	, $zero	, $s1		# Coloca o endereço base no primeiro argumento
+add	$a1	, $zero	, $s2		# Coloca o índice no segundo argumento
+jal	calcular_endereco		# Calcula o endereco do elemento no arranjo
+add	$t9	, $zero	, $v0		# Coloca o retorno da função em $t9
+
+sw	$t0	, 0	($t9)		# Guarda h + A[i] em A[j]
+
+.data
+A0:	.word	0
+A1:	.word	1
+
+--------------------------------------------------
+
+# 10)
+# h = A [ i ] ;
+# A[ i ] = A [ i + 1] ;
+# A [ i + 1] = h ;
+# 
+# $s0	= h
+# $s1	= &A[0]
+# $s3	= i
+
+.text
+.globl main # rótulo onde o programa começa
+j main
+
+# Calcula o endereco de um elemento em um arranjo.
+#
+# @param Em $a0, Endereço de início do arranjo.
+# @param Em $a1, Indice do elemento que se deseja buscar.
+#
+# @return Em $v0, o endereço do elemento no índice informado.
+
+# calcular_endereco( endereco_base, indice )
+calcular_endereco:
+sll	$t9	, $a1	, 2		# $t0	= indice * 4
+add	$v0	, $a0	, $t9		# $v0	= endereço + 4 * indice
+jr $ra
+
+main:
+addi	$s0	, $zero	, 1		# h = 1
+ori	$s1	, $zero	, 0x1001
+sll	$s1	, $s1	, 16
+ori	$s1	, $s1	, 0x0000	# A = 0x10010000
+addi	$s3	, $zero	, 1		# i = 1
+
+add	$a0	, $zero	, $s1		# Coloca o endereço base no primeiro argumento
+add	$a1	, $zero	, $s3		# Coloca o índice no segundo argumento
+jal	calcular_endereco		# Calcula o endereco do elemento no arranjo
+add	$t9	, $zero	, $v0		# Coloca o retorno da função em $t9
+
+lw	$s0	, 0	($t9)		# h = A[i]
+lw	$t0	, 4	($t9)		# $t0 = A[i + 1]
+sw	$t0	, 0	($t9)		# A[i] = $t0
+sw	$s0	, 4	($t9)		# A[i + 1] = h
+
+.data
+A0:	.word	0
+A1:	.word	1
+A2:	.word	2
+
+--------------------------------------------------
+
+# 11)
+# j = 0;
+# i = 10;
+# do
+# {
+#     j = j + 1;
+# }
+# while ( j != i );
+#
+# $s2	= j
+# $s3	= i
+
+.text
+.globl main # rótulo onde o programa começa
+
+main:
+# Inicialização das variáveis
+addi	$s2	, $zero	, 0		# j = 0
+addi	$s3	, $zero	, 10		# i = 10
+
+do:
+addi	$s2	, $s2	, 1		# j = j + 1
+bne	$s2	, $s3	, do		# goto do: if ($s2 != $s3)
+
+--------------------------------------------------
+
+# 12)
+# i = 2
+# h = 100
+# do
+# {
+#     a[i] = a[i - 1] + a[i - 2];
+#     i = i + 1;
+# } while ( i != h );
+# 
+# $s0	= h
+# $s1	= &A[0]
+# $s3	= i
+
+.text
+.globl main # rótulo onde o programa começa
+j main
+
+# Calcula o endereco de um elemento em um arranjo.
+#
+# @param Em $a0, Endereço de início do arranjo.
+# @param Em $a1, Indice do elemento que se deseja buscar.
+#
+# @return Em $v0, o endereço do elemento no índice informado.
+
+# calcular_endereco( endereco_base, indice )
+calcular_endereco:
+sll	$t9	, $a1	, 2		# $t0	= indice * 4
+add	$v0	, $a0	, $t9		# $v0	= endereço + 4 * indice
+jr $ra
+
+main:
+addi	$s0	, $zero	, 100		# h = 100
+ori	$s1	, $zero	, 0x1001
+sll	$s1	, $s1	, 16
+ori	$s1	, $s1	, 0x0000	# A = 0x10010000
+addi	$s3	, $zero	, 2		# i = 2
+
+do:
+
+add	$a0	, $zero	, $s1		# Coloca o endereço base no primeiro argumento
+add	$a1	, $zero	, $s3		# Coloca o índice no segundo argumento
+jal	calcular_endereco		# Calcula o endereco do elemento no arranjo
+add	$t9	, $zero	, $v0		# Coloca o retorno da função em $t9
+
+lw	$t0	, -4	($t9)		# $t0 = A[i - 1]
+lw	$t1	, -8	($t9)		# $t1 = A[i - 2]
+add	$t0	, $t0	, $t1		# $t0 = A[i - 1] + A[i - 2]
+sw	$t0	, 0	($t9)		# A[i] = $t0
+addi	$s3	, $s3	, 1		# i = i + 1
+
+bne	$s3	, $s0	, do		# goto do: if (i != h)
+
+.data
+A0:	.word	1
+A1:	.word	1
+
+--------------------------------------------------
+
+# 13)
+# if ((h >= 50 && h <= 100) ||(h >= 150 && h <= 200))
+#     flag = 1;
+# else
+#     flag = 0;
+# 
+# $s0	= h
+# $s1	= flag
+
+.text
+.globl main # rótulo onde o programa começa
+
+main:
+addi	$s0	, $zero	, 50		# h = 150
+
+slti	$t1	, $s0	, 50		# set $t1 to 1 if h < 50
+beq	$t1	, 1	, flag0		# goto flag0 if $t1 = 1
+slti	$t1	, $s0	, 100		# set $t1 to 1 if h < 100
+beq	$t1	, 1	, flag1		# goto flag1 if $t1 = 1
+beq	$s0	, 100	, flag1		# goto flag1 if h = 100
+
+slti	$t1	, $s0	, 150		# set $t1 to 1 if h < 150
+beq	$t1	, 1	, flag0		# goto flag0 if $t1 = 1
+slti	$t1	, $s0	, 200		# set $t1 to 1 if h < 200
+beq	$t1	, 1	, flag1		# goto flag1 if $t1 = 1
+beq	$s0	, 200	, flag1		# goto flag1 if h = 200
+
+flag0:
+addi	$s1	, $zero	, 0		# flag = 0
+j final
+
+flag1:
+addi	$s1	, $zero	, 1		# flag = 1
+
+final:
+
+.data
+A0:	.word	0
+A1:	.word	2
+A2:	.word	1
+
+--------------------------------------------------
+
+# 14)
+# Algoritmo de ordenação seleção
+# 
+# $s1	= &A[0]
+
+.text
+.globl main # rótulo onde o programa começa
+j main
+
+bubblesort: #($a0 = end. base, $a1 = inicio, $a2 = numero de elementos a serem ordenados)
+# $t9	= numero de elementos ordenados
+# $t8	= endereco da bolha
+# $t7	= indice final da ordenacao
+# $t6	= indice da bolha
+# $t5	= registrador para set on less than
+# $t4	= elemento da bolha
+# $t3	= elemento 'a esquerda da bolha (IMAGINANDO UM ARRANJO HORIZONTAL)
+add	$t9	, $zero	, $zero		# numero de elementos ordenados
+add	$t7	, $a1	, $a2		# indice final
+addi	$t7	, $t7	, -1		# indice final
+
+while:
+	beq	$t9	, $a2	, end		# vai para end se ( numero de elementos ordenados == quantidade desejada (2º param) )
+	add	$t6	, $zero	, $t7		# indice bolha = indice final de ordenacao
+	
+	for:
+		slt	$t5	, $t9	, $t6		# $t5 = ( numero de elementos ordenados < indice bolha ) ? 1 : 0
+		beq	$t5	, $zero	, endfor	# vai para endfor se ( numero de elementos ordenados >= bolha )
+		sll	$t8	, $t6	, 2		# multiplica o indice por 4
+		addi	$t6	, $t6	, -1		# indice bolha = indice bolha - 1
+		add	$t8	, $a0	, $t8		# endereco bolha = endereco base + deslocamento
+		lw	$t4	, 0	($t8)		# elemento da bolha = end. base[indice bolha]
+		lw	$t3	, -4	($t8)		# elemento 'a esquerda da bolha = end. base[indice bolha - 1]
+		slt	$t5	, $t4	, $t3		# $t5 = ( elem_bolha < elem_a_esq_bolha ) ? 1 : 0
+		beq	$t5	, $zero	, for		# vai para for se ( elem_bolha >= elem_a_esq_bolha )
+		sw	$t4	, -4	($t8)		# swap
+		sw	$t3	, 0	($t8)		# swap
+		
+		j for
+	endfor:
+	
+	addi	$t9	, $t9	, 1		# numero de elementos ordenados++
+	j while
+end:
+jr $ra
+
+main:
+
+addi	$a0	,	$zero	,	0x1001
+sll	$a0	,	$a0	,	16
+
+lw	$t0	,	0	($a0)		# carrega os valores da memoria
+lw	$t1	,	4	($a0)
+lw	$t2	,	8	($a0)
+
+sw	$t0	,	12	($a0)		# cria uma copia deles logo a frente
+sw	$t1	,	16	($a0)
+sw	$t2	,	20	($a0)
+
+addi	$a0	,	$a0	,	12
+addi	$a1	,	$zero	,	0
+addi	$a2	,	$zero	,	3
+jal bubblesort					# ordena-os
+
+lw	$t1	,	4	($a0)		# pega o elemento do meio
+sw	$t1	,	12	($a0)		# guarda-o apos o vetor ordenado
+
+.data
+A0:	.word	0
+A1:	.word	2
+A2:	.word	1
+
+--------------------------------------------------
+
+# 15)
+# $s0	= contador
+# $s1	= end. base
+# $s2	= copia end. base
+# $s3	= soma
+# $t0	= end. base[contador]
+
+.text
+.globl main
+
+main:
+
+addi	$s1	,	$zero	,	0x1001
+sll	$s1	,	$s1	,	16	# end. base = 0x10010000
+add	$s2	,	$s1	,	$zero	# copia end. base = end. base
+addi	$s0	,	$zero	,	100	# contador = 100
+add	$s3	,	$zero	,	$zero	# soma = 0
+
+dowhile:
+sw	$s0	,	0	($s2)		# *copia end. base = contador
+lw	$t0	,	0	($s2)		# $t0 = *copia end. base
+addi	$s2	,	$s2	, 4		# copia end. base = copia end. base + 4
+addi	$s0	,	$s0	, -1		# contador = contador - 1
+add	$s3	,	$s3	, $t0		# soma = soma + *copia end. base
+bne	$s0	,	$zero	, dowhile	# jump to do: if contador != 0
+
+sw	$s3	,	0	($s2)		# *copia end. base = soma
+
+--------------------------------------------------
